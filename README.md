@@ -6,7 +6,6 @@ A minimal forward authentication service that provides OAuth/SSO login and authe
 
 ## Why?
 
-
 - Seamlessly overlays any http service with a single endpoint (see: `url-path` in [Configuration](#configuration))
 - Supports multiple providers including Google and OpenID Connect (supported by Azure, Github, Salesforce etc.)
 - Supports multiple domains/subdomains by dynamically generating redirect_uri's
