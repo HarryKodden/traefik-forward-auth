@@ -4,6 +4,10 @@ import (
 	"context"
 	"errors"
 
+	"encoding/json"
+
+	"net/http"
+
 	"github.com/coreos/go-oidc"
 	"golang.org/x/oauth2"
 )
@@ -84,16 +88,37 @@ func (o *OIDC) ExchangeCode(redirectURI, code string) (string, error) {
 func (o *OIDC) GetUser(token string) (User, error) {
 	var user User
 
-	// Parse & Verify ID Token
-	idToken, err := o.verifier.Verify(o.ctx, token)
+	client := &http.Client{}
+	req, _ := http.NewRequest("GET", o.IssuerURL+"/.well-known/openid-configuration", nil)
+	res, err := client.Do(req)
+	if err != nil {
+		return user, err
+	}
+	defer res.Body.Close()
+
+	var config struct {
+		UserInfoEndpoint string `json:"userinfo_endpoint"`
+	}
+
+	err = json.NewDecoder(res.Body).Decode(&config)
 	if err != nil {
 		return user, err
 	}
 
-	// Extract custom claims
-	if err := idToken.Claims(&user); err != nil {
+	client = &http.Client{}
+	req, err = http.NewRequest("GET", config.UserInfoEndpoint, nil)
+	if err != nil {
 		return user, err
 	}
 
-	return user, nil
+	req.Header.Add("Authorization", "Bearer "+token)
+	res, err = client.Do(req)
+	if err != nil {
+		return user, err
+	}
+
+	defer res.Body.Close()
+	err = json.NewDecoder(res.Body).Decode(&user)
+
+	return user, err
 }

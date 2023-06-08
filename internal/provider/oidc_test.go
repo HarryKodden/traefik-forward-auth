@@ -192,6 +192,7 @@ func (s *OIDCServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{
 			"issuer":"`+s.url.String()+`",
 			"authorization_endpoint":"`+s.url.String()+`/auth",
+			"userinfo_endpoint":"`+s.url.String()+`/userinfo",
 			"token_endpoint":"`+s.url.String()+`/token",
 			"jwks_uri":"`+s.url.String()+`/jwks"
 		}`)
@@ -208,6 +209,14 @@ func (s *OIDCServer) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		fmt.Fprint(w, `{
 			"access_token":"123456789",
 			"id_token":"id_123456789"
+		}`)
+	} else if r.URL.Path == "/userinfo" {
+		w.Header().Set("Content-Type", "application/json")
+		fmt.Fprint(w, `{
+			"id":"1",
+			"email":"example@example.com",
+			"verified_email":true,
+			"hd":"example.com"
 		}`)
 	} else if r.URL.Path == "/jwks" {
 		// Key request
