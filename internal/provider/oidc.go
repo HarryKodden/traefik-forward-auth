@@ -48,7 +48,7 @@ func (o *OIDC) Setup() error {
 		Endpoint:     o.provider.Endpoint(),
 
 		// "openid" is a required scope for OpenID Connect flows.
-		Scopes: []string{oidc.ScopeOpenID, "profile", "email"},
+		Scopes: []string{oidc.ScopeOpenID},
 	}
 
 	// Create OIDC verifier
@@ -71,13 +71,13 @@ func (o *OIDC) ExchangeCode(redirectURI, code string) (string, error) {
 		return "", err
 	}
 
-	// Extract ID token
-	rawIDToken, ok := token.Extra("id_token").(string)
+	// Extract access token
+	access_token, ok := token.Extra("access_token").(string)
 	if !ok {
-		return "", errors.New("Missing id_token")
+		return "", errors.New("missing access_token")
 	}
 
-	return rawIDToken, nil
+	return access_token, nil
 }
 
 // GetUser uses the given token and returns a complete provider.User object

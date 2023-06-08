@@ -52,7 +52,7 @@ func TestOIDCGetLoginURL(t *testing.T) {
 		"client_id":     []string{"idtest"},
 		"redirect_uri":  []string{"http://example.com/_oauth"},
 		"response_type": []string{"code"},
-		"scope":         []string{"openid profile email"},
+		"scope":         []string{"openid"},
 		"state":         []string{"state"},
 	}
 	assert.Equal(expectedQs, qs)
@@ -78,7 +78,7 @@ func TestOIDCGetLoginURL(t *testing.T) {
 		"client_id":     []string{"idtest"},
 		"redirect_uri":  []string{"http://example.com/_oauth"},
 		"response_type": []string{"code"},
-		"scope":         []string{"openid profile email"},
+		"scope":         []string{"openid"},
 		"state":         []string{"state"},
 		"resource":      []string{"resourcetest"},
 	}
@@ -102,7 +102,7 @@ func TestOIDCExchangeCode(t *testing.T) {
 
 	token, err := provider.ExchangeCode("http://example.com/_oauth", "code")
 	assert.Nil(err)
-	assert.Equal("id_123456789", token)
+	assert.Equal("123456789", token)
 }
 
 func TestOIDCGetUser(t *testing.T) {
