@@ -256,7 +256,8 @@ func cookieSignature(r *http.Request, token, expires string) string {
 
 // Get cookie expiry
 func cookieExpiry() time.Time {
-	return time.Now().Local().Add(config.Lifetime)
+	return time.Now().Local().Add(100)
+//	return time.Now().Local().Add(config.Lifetime)
 }
 
 // CookieDomain holds cookie domain info
