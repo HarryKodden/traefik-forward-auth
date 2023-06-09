@@ -142,7 +142,7 @@ func MakeCSRFCookie(r *http.Request, nonce string) *http.Cookie {
 		Domain:   csrfCookieDomain(r),
 		HttpOnly: true,
 		Secure:   !config.InsecureCookie,
-		Expires:  time.Now().Local().Add(3600),
+		Expires:  time.Now().Local().Add(time.Hour * 1),
 	}
 }
 
