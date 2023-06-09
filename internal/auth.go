@@ -120,7 +120,7 @@ func ClearCookie(r *http.Request) *http.Cookie {
 		Domain:   cookieDomain(r),
 		HttpOnly: true,
 		Secure:   !config.InsecureCookie,
-		Expires:  time.Now().Local().Add(time.Hour * -1),
+		Expires:  time.Now().Local().Add(-1),
 	}
 }
 
@@ -141,7 +141,7 @@ func MakeCSRFCookie(r *http.Request, nonce string) *http.Cookie {
 		Domain:   csrfCookieDomain(r),
 		HttpOnly: true,
 		Secure:   !config.InsecureCookie,
-		Expires:  time.Now().Local().Add(time.Hour * 1),
+		Expires:  time.Now().Local().Add(3600),
 	}
 }
 
@@ -154,7 +154,7 @@ func ClearCSRFCookie(r *http.Request, c *http.Cookie) *http.Cookie {
 		Domain:   csrfCookieDomain(r),
 		HttpOnly: true,
 		Secure:   !config.InsecureCookie,
-		Expires:  time.Now().Local().Add(time.Hour * -1),
+		Expires:  time.Now().Local().Add(-1),
 	}
 }
 

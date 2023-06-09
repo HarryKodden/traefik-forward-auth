@@ -87,6 +87,7 @@ func (s *Server) AuthHandler(providerName, rule string) http.HandlerFunc {
 		// Get auth cookie
 		c, err := r.Cookie(config.CookieName)
 		if err != nil {
+			logger.Info("No cookie, needs authentication")
 			s.authRedirect(logger, w, r, p)
 			return
 		}
@@ -98,7 +99,7 @@ func (s *Server) AuthHandler(providerName, rule string) http.HandlerFunc {
 			http.SetCookie(w, ClearCSRFCookie(r, c))
 
 			if err.Error() == "Cookie has expired" {
-				logger.Info("Cookie has expired")
+				logger.Info("Cookie has expired, needs re-authentication")
 				s.authRedirect(logger, w, r, p)
 			} else {
 				logger.WithField("error", err).Warn("Invalid cookie")
