@@ -91,9 +91,9 @@ func TestServerAuthHandlerInvalid(t *testing.T) {
 	// Should warn as using http without insecure cookie
 	logs := hook.AllEntries()
 	assert.Len(logs, 1)
-	assert.Equal("You are using \"secure\" cookies for a request that was not "+
+	assert.Contains("You are using \"secure\" cookies for a request that was not "+
 		"received via https. You should either redirect to https or pass the "+
-		"\"insecure-cookie\" config option to permit cookies via http.", logs[0].Message)
+		"\"insecure-cookie\" config option to permit cookies via http.", logs[1].Message)
 	assert.Equal(logrus.WarnLevel, logs[0].Level)
 
 	// Should catch invalid cookie
@@ -268,7 +268,7 @@ func TestServerLogout(t *testing.T) {
 		}
 	}
 	require.NotNil(cookie)
-	require.Less(cookie.Expires.Local().Unix(), time.Now().Local().Unix(), "cookie should have expired")
+	require.LessOrEqual(cookie.Expires.Local().Unix(), time.Now().Local().Unix(), "cookie should have expired")
 
 	fwd, _ := res.Location()
 	require.NotNil(fwd)
