@@ -96,8 +96,6 @@ func (s *Server) AuthHandler(providerName, rule string) http.HandlerFunc {
 		token, err := ValidateCookie(r, c)
 		if err != nil {
 			// Make sure the CSRF cookie is cleared when auth cookie is invalig or expired
-			http.SetCookie(w, ClearCSRFCookie(r, c))
-
 			if err.Error() == "Cookie has expired" {
 				logger.Info("Cookie has expired, needs re-authentication")
 				s.authRedirect(logger, w, r, p)
