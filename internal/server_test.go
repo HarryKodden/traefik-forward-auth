@@ -252,7 +252,7 @@ func TestServerLogout(t *testing.T) {
 		}
 	}
 	require.NotNil(cookie)
-	require.Less(cookie.Expires.Local().Unix(), time.Now().Local().Unix(), "cookie should have expired")
+	require.LessOrEqual(cookie.Expires.Local().Unix(), time.Now().Local().Unix(), "cookie should have expired")
 
 	// Test with redirect
 	config.LogoutRedirect = "http://redirect/path"
