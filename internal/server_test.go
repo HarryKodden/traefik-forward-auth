@@ -90,11 +90,14 @@ func TestServerAuthHandlerInvalid(t *testing.T) {
 
 	// Should warn as using http without insecure cookie
 	logs := hook.AllEntries()
-	assert.Len(logs, 1)
+	assert.Len(logs, 2)
+	assert.Contains("No cookie, needs authentication", logs[0].Message)
+	assert.Equal(logrus.InfoLevel, logs[0].Level)
+
 	assert.Contains("You are using \"secure\" cookies for a request that was not "+
 		"received via https. You should either redirect to https or pass the "+
 		"\"insecure-cookie\" config option to permit cookies via http.", logs[1].Message)
-	assert.Equal(logrus.WarnLevel, logs[0].Level)
+	assert.Equal(logrus.WarnLevel, logs[1].Level)
 
 	// Should catch invalid cookie
 	req = newDefaultHttpRequest("/foo")
