@@ -161,7 +161,7 @@ func (s *Server) AuthCallbackHandler() http.HandlerFunc {
 		}
 
 		// Clear CSRF cookie
-		http.SetCookie(w, ClearCSRFCookie(r, c))
+		// http.SetCookie(w, ClearCSRFCookie(r, c))
 
 		// Exchange code for token
 		token, err := p.ExchangeCode(redirectUri(r), r.URL.Query().Get("code"))
