@@ -130,7 +130,7 @@ func buildCSRFCookieName(nonce string) string {
 
 // MakeCSRFCookie makes a csrf cookie (used during login only)
 //
-// Note, CSRF cookies live shorter than auth cookies, a fixed 1 Hour.
+// Note, CSRF cookies live shorter than auth cookies, a fixed 5 minutes.
 // That's because some CSRF cookies may belong to auth flows that don't complete
 // and thus may not get cleared by ClearCookie.
 func MakeCSRFCookie(r *http.Request, nonce string) *http.Cookie {
@@ -141,7 +141,7 @@ func MakeCSRFCookie(r *http.Request, nonce string) *http.Cookie {
 		Domain:   csrfCookieDomain(r),
 		HttpOnly: true,
 		Secure:   !config.InsecureCookie,
-		Expires:  time.Now().Local().Add(time.Hour * 1),
+		Expires:  time.Now().Local().Add(time.Minute * 5),
 	}
 }
 
